@@ -17,22 +17,13 @@
 
 	<!-- XXX: lo que ya tiene el carrito deberia ir en otro componente -->
 	<h2>Carrito</h2>
-  <ul>
-    <li
-      v-for="(producto, posicion) in carrito"
-      >
-      {{ producto.dsc }}
-
-      <button
-        @click="quitarDelCarrito(posicion)">
-        Quitar
-      </button>
-    </li>
-  </ul>
+	<carrito/>
 	</div>
 </template>
 
 <script>
+import Carrito from '~/components/carrito.vue';
+
 var ProductosDePrueba= [
   {id: 1, dsc: "hojas A4", precio: 101.00},
   {id: 21, dsc: "marcadores", precio: 21.05},
@@ -40,22 +31,21 @@ var ProductosDePrueba= [
 
 export default {
   name: "PagComprar",
+	components: {
+		Carrito
+	},
   data () {return{ //U: funcion, devuelve clave-valor con datos que uso
     catalogo: ProductosDePrueba,
-		carrito: [],	
   } },
-  computed: {}, //U: propiedades que se calculan en base a otras
+  computed: { //U: propiedades que se calculan en base a otras
+		carrito () { return this.$store.getters["carrito/items"]; }
+	}, 
 	methods: { //U: acciones de botones, etc.
 		agregarAlCarrito: function (que) {
-			console.log("carrito, agregar",que.dsc);
-			this.carrito.push(que);
-			console.log("carrito agregado",que.dsc, JSON.stringify(this.carrito,1) );
+			this.$store.dispatch("carrito/agregar",que);
 		},
 		quitarDelCarrito: function (posicion) {
-			console.log("carrito, quitar",posicion);
-			var que= this.carrito[posicion];
-			this.carrito.splice(posicion,1); //A: eliminar el item en esa posicion
-			console.log("carrito, quitado",posicion, que, JSON.stringify(this.carrito,1) );
+			this.$store.dispatch("carrito/quitar",posicion);
 		}
 	},
   created () { console.log("created",this); } //U: para inicializar el componente

@@ -1,6 +1,6 @@
 # app0-front
 
-> Un carrito de prueba
+> Un carrito de prueba, VERSION (MENOS) CHANCHA, separando estado y componente para el carrito
 
 ## Build Setup
 
